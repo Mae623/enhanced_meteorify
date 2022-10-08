@@ -31,7 +31,11 @@ class SubscribedCollection {
     _collection.removeUpdateListeners();
   }
 
-  /// Returns specific objects from a subscribed collection using a set of [selectors].
+  void removeSingleListener(UpdateListener listener) {
+    _collection.removeSingleListener(listener);
+  }
+
+    /// Returns specific objects from a subscribed collection using a set of [selectors].
   Map<String, Map<String, dynamic>> find(Map<String, dynamic> selectors) {
     var filteredCollection = <String, Map<String, dynamic>>{};
     _collection.findAll().forEach((key, document) {
