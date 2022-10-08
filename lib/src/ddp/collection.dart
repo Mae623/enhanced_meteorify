@@ -24,6 +24,10 @@ Tuple2<String, Map<String, dynamic>> _parse(Map<String, dynamic> update) {
           return Tuple2(_id, _updates as Map<String, dynamic>);
         }
       }
+      if (update.containsKey('cleared')) {
+        final List cleared = update['cleared'];
+        return Tuple2(_id, {cleared.first: null});
+      }
       return Tuple2(_id, Map<String, dynamic>.from({}));
     }
   }
@@ -83,12 +87,22 @@ class KeyCache implements Collection {
 
   @override
   void changed(Map<String, dynamic> doc) {
+    final l = Logger();
     final _pair = _parse(doc);
+    l.v(_pair);
     // ignore: unnecessary_null_comparison
     if (_pair.item2 != null) {
       if (this._items.containsKey((_pair.item1))) {
         final _item = this._items[_pair.item1];
-        _pair.item2.forEach((key, value) => _item![key] = value);
+        l.v(_item);
+        _pair.item2.forEach((key, value) {
+          if (value == null) {
+            _item!.remove(key);
+            l.v(_item);
+          } else {
+            _item![key] = value;
+          }
+        });
         this._items[_pair.item1] = _item as Map<String, dynamic>;
         this.notify('update', _pair.item1, _item);
       }
