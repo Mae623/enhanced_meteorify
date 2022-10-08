@@ -40,19 +40,21 @@ abstract class Collection {
 
   void removeUpdateListeners();
 
+  void removeSingleListener(UpdateListener listener);
+
   Map<String, Map<String, dynamic>> findAll();
 
   Map<String, dynamic> findOne(String id);
 
   factory Collection.mock() => _MockCache();
 
-  factory Collection.key(String name) => KeyCache(name, {}, []);
+  factory Collection.key(String name) => KeyCache(name, {}, {});
 }
 
 class KeyCache implements Collection {
   String name;
   Map<String, Map<String, dynamic>> _items;
-  List<UpdateListener> _listeners;
+  Set<UpdateListener> _listeners;
 
   KeyCache(this.name, this._items, this._listeners);
 
@@ -119,6 +121,11 @@ class KeyCache implements Collection {
 
   @override
   Map<String, dynamic> findOne(String id) => this._items[id]!;
+
+  @override
+  void removeSingleListener(UpdateListener listener) {
+    this._listeners.remove(listener);
+  }
 }
 
 class _MockCache implements Collection {
@@ -144,6 +151,9 @@ class _MockCache implements Collection {
   void removeUpdateListeners() {}
 
   @override
+  void removeSingleListener(UpdateListener listener) {}
+
+  @override
   void removed(Map<String, dynamic> doc) {}
 
   @override
@@ -151,4 +161,6 @@ class _MockCache implements Collection {
 
   @override
   void reset() {}
+
+
 }
