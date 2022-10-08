@@ -1,3 +1,4 @@
+import 'package:logger/logger.dart';
 import 'package:tuple/tuple.dart';
 
 typedef UpdateListener = void Function(
@@ -8,12 +9,18 @@ typedef UpdateListener = void Function(
 );
 
 Tuple2<String, Map<String, dynamic>> _parse(Map<String, dynamic> update) {
+  final Logger l = Logger();
+  l.v(update);
   if (update.containsKey('id')) {
     final _id = update['id'];
+    l.v(_id);
     if (_id.runtimeType == String) {
+      l.v('id is string');
       if (update.containsKey('fields')) {
         final _updates = update['fields'];
+        l.v(_updates);
         if (_updates is Map) {
+          l.v(Tuple2(_id, _updates as Map<String, dynamic>));
           return Tuple2(_id, _updates as Map<String, dynamic>);
         }
       }
@@ -161,6 +168,4 @@ class _MockCache implements Collection {
 
   @override
   void reset() {}
-
-
 }
