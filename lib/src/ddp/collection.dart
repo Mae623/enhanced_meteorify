@@ -20,12 +20,7 @@ Tuple2<String, Map<String, dynamic>> _parse(Map<String, dynamic> update) {
       }
       if (update.containsKey('cleared')) {
         final List _updates = update['cleared'];
-        Logger().v(_updates);
-        Map cleared = {};
-        _updates.map((e) => cleared.addAll({e: null}));
-        Logger().v(cleared);
-        cleared = {for (var e in _updates) e: null};
-        Logger().v(cleared);
+        final Map cleared = {for (var e in _updates) e: null};
         return Tuple2(_id, Map<String, dynamic>.from(cleared));
       }
       return Tuple2(_id, Map<String, dynamic>.from({}));
