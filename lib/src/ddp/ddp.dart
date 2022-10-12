@@ -110,7 +110,6 @@ class DDP implements ConnectionNotifier, StatusNotifier {
   }
 
   void _send(String msg) {
-    Logger().v(msg);
     this._writer!.add(msg);
   }
 
@@ -440,6 +439,7 @@ class DDP implements ConnectionNotifier, StatusNotifier {
       ..serviceMethod = subName
       ..args = args
       ..owner = this;
+
     Logger().v(this._subs);
     Logger().v(_call);
     if (done == null) {

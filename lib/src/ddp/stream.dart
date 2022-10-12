@@ -15,7 +15,6 @@ class Writer implements StreamSink<dynamic> {
 
   @override
   void add(event) {
-    Logger().v(event);
     if (_enableLogs) Log.info(event.toString(), '->');
     this._writer.add(event);
   }
