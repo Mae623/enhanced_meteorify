@@ -431,11 +431,9 @@ class DDP implements ConnectionNotifier, StatusNotifier {
 
   Call _subscribe(String subName, OnCallDone? done, List<dynamic> args) {
     final latestSub = this._subs!.keys.singleWhere(
-          (element) => element.contains(subName),
+          (element) => false, // element.contains(subName),
           orElse: () => '',
         );
-    Logger().v(latestSub);
-    Logger().v(DateTime.now().microsecondsSinceEpoch);
 
     final _call = Call()
       ..id = latestSub.isNotEmpty ? latestSub : '$subName-${IdManager().next()}'
