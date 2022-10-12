@@ -438,7 +438,7 @@ class DDP implements ConnectionNotifier, StatusNotifier {
     final _call = Call()
       ..id = latestSub.isNotEmpty
           ? latestSub
-          : '$subName-${_idManager!.next()}-${DateTime.now().millisecondsSinceEpoch.toString()}'
+          : '$subName-${_idManager!.next()}-${DateTime.now().microsecondsSinceEpoch.toString()}'
       ..serviceMethod = subName
       ..args = args
       ..owner = this;
