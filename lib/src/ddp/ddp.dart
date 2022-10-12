@@ -435,6 +435,8 @@ class DDP implements ConnectionNotifier, StatusNotifier {
           orElse: () => '',
         );
     Logger().v(latestSub);
+    Logger().v(DateTime.now().microsecondsSinceEpoch);
+
     final _call = Call()
       ..id = latestSub.isNotEmpty
           ? latestSub
