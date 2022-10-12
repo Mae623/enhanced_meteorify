@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:logger/logger.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../enhanced_meteorify.dart';
@@ -437,7 +438,9 @@ class DDP implements ConnectionNotifier, StatusNotifier {
       ..serviceMethod = subName
       ..args = args
       ..owner = this;
-
+    Logger().v(this._subs);
+    Logger().v(_idManager);
+    Logger().v(_call.id);
     if (done == null) {
       done = (call) {};
     }
