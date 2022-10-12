@@ -62,7 +62,7 @@ class DDP implements ConnectionNotifier, StatusNotifier {
     this._serverId = '';
     this._waitingForConnect = false;
     this._enableLogs = enableLogs;
-    this._idManager = IdManager();
+    // this._idManager = IdManager();
     this._collections = {};
     this.calls = {};
     this._subs = {};
@@ -438,8 +438,7 @@ class DDP implements ConnectionNotifier, StatusNotifier {
     Logger().v(DateTime.now().microsecondsSinceEpoch);
 
     final _call = Call()
-      ..id =
-          '$subName-${_idManager!.next()}-${DateTime.now().microsecondsSinceEpoch.toString()}'
+      ..id = latestSub.isNotEmpty ? latestSub : '$subName-${IdManager().next()}'
       ..serviceMethod = subName
       ..args = args
       ..owner = this;
