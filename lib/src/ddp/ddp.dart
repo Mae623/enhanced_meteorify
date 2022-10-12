@@ -433,14 +433,14 @@ class DDP implements ConnectionNotifier, StatusNotifier {
           (element) => element.contains(subName),
           orElse: () => '',
         );
+    Logger().v(latestSub);
     final _call = Call()
       ..id = latestSub.isNotEmpty ? latestSub : '$subName-${_idManager!.next()}'
       ..serviceMethod = subName
       ..args = args
       ..owner = this;
     Logger().v(this._subs);
-    Logger().v(_idManager);
-    Logger().v(_call.id);
+    Logger().v(_call);
     if (done == null) {
       done = (call) {};
     }
