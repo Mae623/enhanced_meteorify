@@ -110,6 +110,7 @@ class DDP implements ConnectionNotifier, StatusNotifier {
   }
 
   void _send(String msg) {
+    Logger().v(msg);
     this._writer!.add(msg);
   }
 

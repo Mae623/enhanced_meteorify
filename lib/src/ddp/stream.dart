@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:logger/logger.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'log.dart';
@@ -14,6 +15,7 @@ class Writer implements StreamSink<dynamic> {
 
   @override
   void add(event) {
+    Logger().v(event);
     if (_enableLogs) Log.info(event.toString(), '->');
     this._writer.add(event);
   }
