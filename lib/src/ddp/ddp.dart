@@ -440,8 +440,6 @@ class DDP implements ConnectionNotifier, StatusNotifier {
       ..args = args
       ..owner = this;
 
-    Logger().v(this._subs);
-    Logger().v(_call);
     if (done == null) {
       done = (call) {};
     }
