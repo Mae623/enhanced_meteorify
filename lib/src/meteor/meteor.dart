@@ -85,17 +85,16 @@ class Meteor {
   /// Takes another optional parameter [enableLogs] to enable or disable logs from DDP.
   ///
   /// Returns a [ConnectionStatus] wrapped in [Future].
-  static Future<String> connect(
+  static Future<ConnectionStatus> connect(
     String url, {
     bool autoLoginOnReconnect = false,
     Duration reconnectInterval = const Duration(seconds: 30),
     bool enableLogs = true,
   }) async {
     _enableLogs = enableLogs;
-    return url;
-
     var connectionStatus = await _connectToServer(url);
     _client!.removeStatusListener(_statusListener!);
+    return connectionStatus;
 
     var _token = await Utils.getString('token');
     _statusListener = (status) {
