@@ -208,7 +208,8 @@ class Meteor {
         throw MeteorError.parse(result.reply);
       }
     }
-    return null;
+    // fixme test
+    return isConnected.toString();
   }
 
   /// Login or register a new user with de Google oAuth API
