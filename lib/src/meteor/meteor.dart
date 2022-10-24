@@ -94,6 +94,7 @@ class Meteor {
     _enableLogs = enableLogs;
     var connectionStatus = await _connectToServer(url);
     _client!.removeStatusListener(_statusListener!);
+    return connectionStatus;
 
     var _token = await Utils.getString('token');
     _statusListener = (status) {
@@ -113,7 +114,6 @@ class Meteor {
       }
     };
     _client!.addStatusListener(_statusListener!);
-    return connectionStatus;
   }
 
   /// Connect to Meteor framework using the [url].
@@ -128,7 +128,7 @@ class Meteor {
     _connectionUrl = url;
     _client = DDP(_connectionUrl!, enableLogs: _enableLogs);
     _client!.connect();
-
+//fixme app启动后，连服务器，发生了什么
     _statusListener = (status) {
       if (status == ConnectStatus.connected) {
         isConnected = true;
