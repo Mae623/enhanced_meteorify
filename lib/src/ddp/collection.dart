@@ -12,16 +12,23 @@ Tuple2<String, Map<String, dynamic>> _parse(Map<String, dynamic> update) {
   if (update.containsKey('id')) {
     final _id = update['id'];
     if (_id.runtimeType == String) {
+      Map? _cleared;
+      if (update.containsKey('cleared')) {
+        final List _updates = update['cleared'];
+        _cleared = {for (var e in _updates) e: null};
+      }
+
       if (update.containsKey('fields')) {
         final _updates = update['fields'];
         if (_updates is Map) {
+          if (_cleared != null) {
+            _updates.addAll(_cleared);
+            Logger().v(_updates);
+          }
           return Tuple2(_id, _updates as Map<String, dynamic>);
         }
-      }
-      if (update.containsKey('cleared')) {
-        final List _updates = update['cleared'];
-        final Map cleared = {for (var e in _updates) e: null};
-        return Tuple2(_id, Map<String, dynamic>.from(cleared));
+      } else if (_cleared != null) {
+        return Tuple2(_id, Map<String, dynamic>.from(_cleared));
       }
       return Tuple2(_id, Map<String, dynamic>.from({}));
     }
