@@ -27,12 +27,11 @@ Tuple2<String, Map<String, dynamic>> _parse(Map<String, dynamic> update) {
       if (_updates is Map) {
         if (_cleared != null) {
           _updates.addAll(Map<String, dynamic>.from(_cleared));
-          Logger().v(_updates);
         }
         return Tuple2(_id, _updates as Map<String, dynamic>);
       } else {
         if (_cleared != null) {
-          return Tuple2(_id, Map<String, dynamic>.from(_cleared ?? {}));
+          return Tuple2(_id, Map<String, dynamic>.from(_cleared));
         } else {
           return Tuple2(_id, Map<String, dynamic>.from({}));
         }
