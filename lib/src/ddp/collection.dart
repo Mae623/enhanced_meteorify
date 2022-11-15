@@ -13,24 +13,26 @@ Tuple2<String, Map<String, dynamic>> _parse(Map<String, dynamic> update) {
     final _id = update['id'];
     if (_id.runtimeType == String) {
       Map? _cleared;
+      dynamic _updates;
+
       if (update.containsKey('cleared')) {
         final List _updates = update['cleared'];
         _cleared = {for (var e in _updates) e: null};
       }
 
       if (update.containsKey('fields')) {
-        final _updates = update['fields'];
-        if (_updates is Map) {
-          if (_cleared != null) {
-            _updates.addAll(_cleared);
-            Logger().v(_updates);
-          }
-          return Tuple2(_id, _updates as Map<String, dynamic>);
-        }
-      } else if (_cleared != null) {
-        return Tuple2(_id, Map<String, dynamic>.from(_cleared));
+        _updates = update['fields'];
       }
-      return Tuple2(_id, Map<String, dynamic>.from({}));
+
+      if (_updates is Map) {
+        if (_cleared != null) {
+          _updates.addAll(Map<String, dynamic>.from(_cleared));
+          Logger().v(_updates);
+        }
+        return Tuple2(_id, _updates as Map<String, dynamic>);
+      } else {
+        return Tuple2(_id, Map<String, dynamic>.from(_cleared ?? {}));
+      }
     }
   }
   return Tuple2('', Map<String, dynamic>.from({}));
