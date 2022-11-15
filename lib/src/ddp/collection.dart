@@ -31,7 +31,11 @@ Tuple2<String, Map<String, dynamic>> _parse(Map<String, dynamic> update) {
         }
         return Tuple2(_id, _updates as Map<String, dynamic>);
       } else {
-        return Tuple2(_id, Map<String, dynamic>.from(_cleared ?? {}));
+        if (_cleared != null) {
+          return Tuple2(_id, Map<String, dynamic>.from(_cleared ?? {}));
+        } else {
+          return Tuple2(_id, Map<String, dynamic>.from({}));
+        }
       }
     }
   }
