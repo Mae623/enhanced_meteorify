@@ -53,6 +53,8 @@ class DDP implements ConnectionNotifier, StatusNotifier {
   ReconnectListenersHolder _reconnectListenersHolder =
       ReconnectListenersHolder();
 
+  final Logger l = Logger();
+
   DDP(
     this._url, {
     this.reconnectInterval = const Duration(seconds: 1),
@@ -321,7 +323,7 @@ class DDP implements ConnectionNotifier, StatusNotifier {
       if (this._enableLogs) Log.info(event, '<-');
       if (message.containsKey('msg')) {
         final mtype = message['msg'];
-
+        l.v(message);
         if (this._messageHandlers!.containsKey(mtype)) {
           this._messageHandlers![mtype]!(message);
         } else {

@@ -1,6 +1,8 @@
 import 'package:logger/logger.dart';
 import 'package:tuple/tuple.dart';
 
+final Logger l = Logger();
+
 typedef UpdateListener = void Function(
   String collection,
   String operation,
@@ -78,6 +80,7 @@ class KeyCache implements Collection {
 
   @override
   void notify(String operation, String id, Map<String, dynamic> doc) {
+    l.v(operation + '' + this._listeners.length.toString());
     this._listeners.forEach((listener) {
       listener(this.name, operation, id, doc);
     });
