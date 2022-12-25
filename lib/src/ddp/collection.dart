@@ -80,7 +80,6 @@ class KeyCache implements Collection {
 
   @override
   void notify(String operation, String id, Map<String, dynamic> doc) {
-    l.v(operation + '' + this._listeners.length.toString());
     this._listeners.forEach((listener) {
       listener(this.name, operation, id, doc);
     });

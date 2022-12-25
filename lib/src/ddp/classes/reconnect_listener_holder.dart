@@ -1,7 +1,10 @@
+import 'package:logger/logger.dart';
+
 import 'reconnect_listener.dart';
 
 class ReconnectListenersHolder implements ReconnectListener {
   List<ReconnectListener> _listeners = [];
+  Logger l = Logger();
 
   void addReconnectListener(ReconnectListener? listener) {
     if (listener == null) {
@@ -24,7 +27,7 @@ class ReconnectListenersHolder implements ReconnectListener {
       try {
         listener.onReconnectBegin();
       } catch (exception) {
-        print(exception);
+        l.v(exception);
       }
     });
   }
@@ -34,7 +37,7 @@ class ReconnectListenersHolder implements ReconnectListener {
       try {
         listener.onReconnectDone();
       } catch (exception) {
-        print(exception);
+        l.v(exception);
       }
     });
   }
@@ -44,7 +47,7 @@ class ReconnectListenersHolder implements ReconnectListener {
       try {
         listener.onConnected();
       } catch (exception) {
-        print(exception);
+        l.v(exception);
       }
     });
   }

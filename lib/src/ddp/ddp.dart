@@ -57,6 +57,7 @@ class DDP implements ConnectionNotifier, StatusNotifier {
 
   DDP(
     this._url, {
+    /// 重连时间1秒
     this.reconnectInterval = const Duration(seconds: 1),
     bool enableLogs = true,
   }) {
@@ -102,6 +103,7 @@ class DDP implements ConnectionNotifier, StatusNotifier {
 
   String get version => _version;
 
+  /// 得到新的status，保存，并通知给各个status监听器
   void _status(ConnectStatus status) {
     if (this._connectStatus == status) {
       return;
@@ -258,6 +260,7 @@ class DDP implements ConnectionNotifier, StatusNotifier {
     this._messageHandlers!['nosub'] = (msg) {
       if (msg.containsKey('id')) {
         final id = msg['id'] as String;
+        // fixme _subs可能就是所有订阅
         final runningSub = this._subs![id];
 
         if (runningSub != null) {
@@ -269,7 +272,7 @@ class DDP implements ConnectionNotifier, StatusNotifier {
             this._subs!.remove(id);
           }
         }
-
+        // fixme 居然是两个地方都要去掉
         final runningUnSub = this._unsubs![id];
         if (runningUnSub != null) {
           runningUnSub.done();
@@ -279,9 +282,11 @@ class DDP implements ConnectionNotifier, StatusNotifier {
     };
     this._messageHandlers!['ready'] = (msg) {
       if (msg.containsKey('subs')) {
+        // fixme 看来是云端给过来的subs集合
         this._subscriptions = msg['subs'] as List<dynamic>;
         _subscriptions!.forEach((sub) {
           if (this._subs!.containsKey(sub)) {
+            // fixme 取消自己的已有订阅？？？
             this._subs![sub]!.done();
             this._subs!.remove(sub);
           }
@@ -297,6 +302,7 @@ class DDP implements ConnectionNotifier, StatusNotifier {
     this._messageHandlers!['result'] = (msg) {
       if (msg.containsKey('id')) {
         final id = msg['id'];
+        // fixme 有了subs还有calls……
         final call = this.calls![id];
         this.calls!.remove(id);
         if (msg.containsKey('error')) {
@@ -322,10 +328,10 @@ class DDP implements ConnectionNotifier, StatusNotifier {
       final message = json.decode(event) as Map<String, dynamic>;
       if (this._enableLogs) Log.info(event, '<-');
       if (message.containsKey('msg')) {
-        final mtype = message['msg'];
-        l.v(message);
-        if (this._messageHandlers!.containsKey(mtype)) {
-          this._messageHandlers![mtype]!(message);
+        final messageType = message['msg'];
+
+        if (this._messageHandlers!.containsKey(messageType)) {
+          this._messageHandlers![messageType]!(message);
         } else {
           if (this._enableLogs)
             Log.warn('Server sent unexpected message $message');
@@ -381,7 +387,7 @@ class DDP implements ConnectionNotifier, StatusNotifier {
     }
   }
 
-  Collection? collectionByName(String name) {
+  Collection? getCollectionByName(String name) {
     if (!this._collections!.containsKey(name)) {
       final collection = Collection.key(name);
       this._collections![name] = collection;
@@ -393,7 +399,7 @@ class DDP implements ConnectionNotifier, StatusNotifier {
     if (msg.containsKey('collection')) {
       final name = msg['collection'];
       if (name.runtimeType == String) {
-        return this.collectionByName(name);
+        return this.getCollectionByName(name);
       }
     }
     return Collection.mock();

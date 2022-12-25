@@ -476,7 +476,7 @@ class Meteor {
   /// [SubscribedCollection] supports only read operations.
   static Future<SubscribedCollection?> collection(String collectionName) async {
     try {
-      var collection = _client!.collectionByName(collectionName);
+      var collection = _client!.getCollectionByName(collectionName);
       return SubscribedCollection(collection!, collectionName);
     } catch (err) {
       MeteorError.parse(err as Map<String, dynamic>);
