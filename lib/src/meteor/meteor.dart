@@ -88,6 +88,8 @@ class Meteor {
   static Future<ConnectionStatus> connect(
     String url, {
     bool autoLoginOnReconnect = false,
+
+    /// 看起来没有用处的一个变量
     Duration reconnectInterval = const Duration(seconds: 1),
     bool enableLogs = true,
   }) async {

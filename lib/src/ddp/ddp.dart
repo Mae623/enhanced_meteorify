@@ -57,8 +57,9 @@ class DDP implements ConnectionNotifier, StatusNotifier {
 
   DDP(
     this._url, {
-    /// 重连时间1秒
-    this.reconnectInterval = const Duration(seconds: 1),
+
+    /// 重连时间原来是1秒
+    this.reconnectInterval = const Duration(milliseconds: 500),
     bool enableLogs = true,
   }) {
     this._url = _url;
