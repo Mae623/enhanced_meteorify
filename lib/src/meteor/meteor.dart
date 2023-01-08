@@ -68,7 +68,7 @@ class Meteor {
   static bool isConnected = false;
 
   /// bool to enable Meteorify/DDP logs
-  static bool _enableLogs = true;
+  static bool _enableLogs = false;
 
   /// The [_currentUserId] of the logged in user.
   static String _currentUserId = '';
