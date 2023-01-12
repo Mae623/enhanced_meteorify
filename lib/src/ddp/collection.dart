@@ -120,7 +120,8 @@ class KeyCache implements Collection {
     // ignore: unnecessary_null_comparison
     if (_pair.item1 != null) {
       this._items.remove(_pair.item1);
-      this.notify('remove', _pair.item1, Map<String, dynamic>());
+      this.notify('remove', _pair.item1,
+          this._items[_pair.item1] ?? Map<String, dynamic>());
     }
   }
 
