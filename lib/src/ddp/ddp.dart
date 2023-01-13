@@ -261,7 +261,8 @@ class DDP implements ConnectionNotifier, StatusNotifier {
     this._messageHandlers!['nosub'] = (msg) {
       if (msg.containsKey('id')) {
         final id = msg['id'] as String;
-        // fixme _subs可能就是所有订阅
+
+        /// _subs可能就是所有订阅
         final runningSub = this._subs![id];
 
         if (runningSub != null) {
@@ -273,7 +274,8 @@ class DDP implements ConnectionNotifier, StatusNotifier {
             this._subs!.remove(id);
           }
         }
-        // fixme 居然是两个地方都要去掉
+
+        /// 居然是两个地方都要去掉
         final runningUnSub = this._unsubs![id];
         if (runningUnSub != null) {
           runningUnSub.done();
@@ -283,11 +285,11 @@ class DDP implements ConnectionNotifier, StatusNotifier {
     };
     this._messageHandlers!['ready'] = (msg) {
       if (msg.containsKey('subs')) {
-        // fixme 看来是云端给过来的subs集合
+        /// 看来是云端给过来的subs集合
         this._subscriptions = msg['subs'] as List<dynamic>;
         _subscriptions!.forEach((sub) {
           if (this._subs!.containsKey(sub)) {
-            // fixme 取消自己的已有订阅？？？
+            /// 取消自己的已有订阅？？？
             this._subs![sub]!.done();
             this._subs!.remove(sub);
           }
@@ -303,7 +305,8 @@ class DDP implements ConnectionNotifier, StatusNotifier {
     this._messageHandlers!['result'] = (msg) {
       if (msg.containsKey('id')) {
         final id = msg['id'];
-        // fixme 有了subs还有calls……
+
+        /// 有了subs还有calls……
         final call = this.calls![id];
         this.calls!.remove(id);
         if (msg.containsKey('error')) {
