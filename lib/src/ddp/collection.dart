@@ -56,6 +56,8 @@ abstract class Collection {
 
   void init();
 
+  void clear();
+
   void addUpdateListener(UpdateListener listener);
 
   void removeUpdateListeners();
@@ -73,10 +75,10 @@ abstract class Collection {
 
 class KeyCache implements Collection {
   String name;
-  Map<String, Map<String, dynamic>> _items;
+  Map<String, Map<String, dynamic>> items;
   Set<UpdateListener> _listeners;
 
-  KeyCache(this.name, this._items, this._listeners);
+  KeyCache(this.name, this.items, this._listeners);
 
   @override
   void notify(String operation, String id, Map<String, dynamic> doc) {
@@ -89,7 +91,7 @@ class KeyCache implements Collection {
   void added(Map<String, dynamic> doc) {
     final _pair = _parse(doc);
     if (_pair.item2.isNotEmpty) {
-      this._items[_pair.item1] = _pair.item2;
+      this.items[_pair.item1] = _pair.item2;
       this.notify('create', _pair.item1, _pair.item2);
     }
   }
@@ -99,8 +101,8 @@ class KeyCache implements Collection {
     final _pair = _parse(doc);
     // ignore: unnecessary_null_comparison
     if (_pair.item2 != null) {
-      if (this._items.containsKey((_pair.item1))) {
-        final _item = this._items[_pair.item1];
+      if (this.items.containsKey((_pair.item1))) {
+        final _item = this.items[_pair.item1];
         _pair.item2.forEach((key, value) {
           if (value == null) {
             _item!.remove(key);
@@ -108,7 +110,7 @@ class KeyCache implements Collection {
             _item![key] = value;
           }
         });
-        this._items[_pair.item1] = _item as Map<String, dynamic>;
+        this.items[_pair.item1] = _item as Map<String, dynamic>;
         this.notify('update', _pair.item1, _item);
       }
     }
@@ -119,8 +121,8 @@ class KeyCache implements Collection {
     final _pair = _parse(doc);
     // ignore: unnecessary_null_comparison
     if (_pair.item1 != null) {
-      final _item = this._items[_pair.item1];
-      this._items.remove(_pair.item1);
+      final _item = this.items[_pair.item1];
+      this.items.remove(_pair.item1);
       this.notify('remove', _pair.item1, _item ?? Map<String, dynamic>());
     }
   }
@@ -144,14 +146,19 @@ class KeyCache implements Collection {
   void init() {}
 
   @override
-  Map<String, Map<String, dynamic>> findAll() => this._items;
+  Map<String, Map<String, dynamic>> findAll() => this.items;
 
   @override
-  Map<String, dynamic> findOne(String id) => this._items[id]!;
+  Map<String, dynamic> findOne(String id) => this.items[id]!;
 
   @override
   void removeSingleListener(UpdateListener listener) {
     this._listeners.remove(listener);
+  }
+
+  @override
+  void clear() {
+    items = {};
   }
 }
 
@@ -188,4 +195,7 @@ class _MockCache implements Collection {
 
   @override
   void reset() {}
+
+  @override
+  void clear() {}
 }

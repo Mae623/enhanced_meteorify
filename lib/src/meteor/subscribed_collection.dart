@@ -5,40 +5,44 @@ import 'package:enhanced_meteorify/src/ddp/collection.dart';
 /// [SubscribedCollection] supports only read functionality useful in case of getting only the data subscribed by user and not any other data.
 class SubscribedCollection {
   /// The internal collection instance.
-  final Collection _collection;
+  final Collection collection;
 
   /// Name of the collection.
   String name;
 
   /// Construct a subscribed collection.
-  SubscribedCollection(this._collection, this.name);
+  SubscribedCollection(this.collection, this.name);
 
   /// Returns a single object by matching the [id] of the object.
   Map<String, dynamic> findOne(String id) {
-    return _collection.findOne(id);
+    return collection.findOne(id);
   }
 
   /// Returns all objects of the subscribed collection.
   Map<String, Map<String, dynamic>> findAll() {
-    return _collection.findAll();
+    return collection.findAll();
   }
 
   void addUpdateListener(UpdateListener listener) {
-    _collection.addUpdateListener(listener);
+    collection.addUpdateListener(listener);
   }
 
   void removeUpdateListeners() {
-    _collection.removeUpdateListeners();
+    collection.removeUpdateListeners();
   }
 
   void removeSingleListener(UpdateListener listener) {
-    _collection.removeSingleListener(listener);
+    collection.removeSingleListener(listener);
   }
 
-    /// Returns specific objects from a subscribed collection using a set of [selectors].
+  void clear() {
+    collection.clear();
+  }
+
+  /// Returns specific objects from a subscribed collection using a set of [selectors].
   Map<String, Map<String, dynamic>> find(Map<String, dynamic> selectors) {
     var filteredCollection = <String, Map<String, dynamic>>{};
-    _collection.findAll().forEach((key, document) {
+    collection.findAll().forEach((key, document) {
       var shouldAdd = true;
       selectors.forEach((selector, value) {
         if (document[selector] != value) {
@@ -51,7 +55,7 @@ class SubscribedCollection {
         print("Don't add");
       }
     });
-
+    collection.init();
     return filteredCollection;
   }
 }
