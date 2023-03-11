@@ -57,7 +57,6 @@ class DDP implements ConnectionNotifier, StatusNotifier {
 
   DDP(
     this._url, {
-
     /// 重连时间原来是1秒
     this.reconnectInterval = const Duration(milliseconds: 500),
     bool enableLogs = true,
@@ -422,9 +421,9 @@ class DDP implements ConnectionNotifier, StatusNotifier {
     return _call;
   }
 
-  Future<Call> call(String serviceMetod, List<dynamic> args) {
+  Future<Call> call(String serviceMethod, List<dynamic> args) {
     final completer = Completer<Call>();
-    this._apply(serviceMetod, (call) => completer.complete(call), args);
+    this._apply(serviceMethod, (call) => completer.complete(call), args);
     return completer.future;
   }
 
