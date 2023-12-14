@@ -27,7 +27,7 @@ class ReconnectListenersHolder implements ReconnectListener {
       try {
         listener.onReconnectBegin();
       } catch (exception) {
-        l.v(exception);
+        l.t(exception);
       }
     });
   }
@@ -37,7 +37,7 @@ class ReconnectListenersHolder implements ReconnectListener {
       try {
         listener.onReconnectDone();
       } catch (exception) {
-        l.v(exception);
+        l.t(exception);
       }
     });
   }
@@ -47,7 +47,7 @@ class ReconnectListenersHolder implements ReconnectListener {
       try {
         listener.onConnected();
       } catch (exception) {
-        l.v(exception);
+        l.t(exception);
       }
     });
   }

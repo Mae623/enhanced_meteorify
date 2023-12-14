@@ -85,11 +85,11 @@ class Meteor {
   /// Takes another optional parameter [enableLogs] to enable or disable logs from DDP.
   ///
   /// Returns a [ConnectionStatus] wrapped in [Future].
+  ///
+  /// 外部程序使用的入口
   static Future<ConnectionStatus> connect(
     String url, {
     bool autoLoginOnReconnect = false,
-
-    /// 看起来没有用处的一个变量
     Duration reconnectInterval = const Duration(seconds: 1),
     bool enableLogs = true,
   }) async {
@@ -122,6 +122,8 @@ class Meteor {
   /// Takes an another parameter [heartbeatInterval] which indicates the duration after which the client checks if the connection is still alive.
   ///
   /// Returns a [ConnectionStatus] wrapped in a future.
+  ///
+  /// 创建一个DDP实例，连接，创建状态监听器，添加状态监听器
   static Future<ConnectionStatus> _connectToServer(
     String url,
   ) async {

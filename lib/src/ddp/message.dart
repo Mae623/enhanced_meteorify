@@ -27,7 +27,8 @@ class Message {
     });
   }
 
-  static String method(String id, methodName, List<dynamic> args) {
+  static String method(
+      {required String id, required methodName, required List<dynamic> args}) {
     return json.encode({
       'msg': 'method',
       'method': methodName,
