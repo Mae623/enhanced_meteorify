@@ -86,7 +86,6 @@ class Meteor {
   ///
   /// Returns a [ConnectionStatus] wrapped in [Future].
   ///
-  /// 外部程序使用的入口
   static Future<ConnectionStatus> connect(
     String url, {
     bool autoLoginOnReconnect = false,
@@ -123,7 +122,6 @@ class Meteor {
   ///
   /// Returns a [ConnectionStatus] wrapped in a future.
   ///
-  /// 创建一个DDP实例，连接，创建状态监听器，添加状态监听器
   static Future<ConnectionStatus> _connectToServer(
     String url,
   ) async {

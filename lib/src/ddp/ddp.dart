@@ -103,9 +103,6 @@ class DDP implements ConnectionNotifier, StatusNotifier {
 
   String get version => _version;
 
-  /// 改变反映连接状态的状态变量
-  ///
-  /// 状态监听器们干活
   void _status(ConnectStatus status) {
     if (this._connectStatus == status) {
       return;
@@ -119,19 +116,6 @@ class DDP implements ConnectionNotifier, StatusNotifier {
     this._writer!.add(msg);
   }
 
-  /// 把反映连接状态的状态变量置为connecting，状态监听器们干活
-  ///
-  /// 初始化_messageHandlers，用于处理ddp传来的各种server消息
-  ///
-  /// 初始化_socket
-  ///
-  /// 初始化_reader
-  ///
-  /// 初始化_writer
-  ///
-  /// 初始化_reader的listen函数
-  ///
-  /// _writer增加一条消息
   void _start(WebSocketChannel ws, String msg) {
     this._status(ConnectStatus.connecting);
 
@@ -141,20 +125,10 @@ class DDP implements ConnectionNotifier, StatusNotifier {
     this._reader = Reader(ws.stream);
     this._writer = Writer(ws.sink, enableLogs: this._enableLogs);
     this._inboxManager();
+    print(msg);
     this._send(msg);
   }
 
-  /// 如果不是在等待连接的状态，就改一下标志位，重连监听器Holder让各个监听器执行一下onReconnectBegin()。应该是用户传入的函数
-  ///
-  /// 将dialing置为当前连接状态，并让状态监听器干活
-  ///
-  /// 将_isTryToReconnect置为true
-  ///
-  /// WebSocketChannel连接到用户给的url，获得一个WebSocketChannel
-  ///
-  /// 重连监听器Holder让各个监听器执行一下onConnected()。应该也是用户传入的函数
-  ///
-  /// 上述情况出问题，就执行_reconnectLater函数，先close，然后在重连间隔后，执行重连函数
   void connect() async {
     try {
       if (!_waitingForConnect) {
@@ -182,21 +156,6 @@ class DDP implements ConnectionNotifier, StatusNotifier {
     }
   }
 
-  /// 先取消_reconnectTimer
-  ///
-  /// _reconnectListenersHolder执行各个ReconnectListener的onReconnectBegin函数
-  ///
-  /// 执行close函数
-  ///
-  /// 将连接状态置为dialing，各个状态监听器干活
-  ///
-  /// _isTryToReconnect置为true
-  ///
-  /// 执行WebSocketChannel.connect，获得一个WebSocketChannel实例
-  ///
-  /// 执行_start
-  ///
-  /// 各个Call添加一条信息
   void reconnect() {
     try {
       if (this._reconnectTimer != null) {
@@ -210,6 +169,8 @@ class DDP implements ConnectionNotifier, StatusNotifier {
       this._status(ConnectStatus.dialing);
       _isTryToReconnect = true;
       final connection = WebSocketChannel.connect(Uri.parse(this._url));
+      print(_sessionId);
+
       this._start(
         connection,
         Message.connect(
@@ -294,6 +255,8 @@ class DDP implements ConnectionNotifier, StatusNotifier {
   void _initMessageHandlers() {
     this._messageHandlers = {};
     this._messageHandlers!['connected'] = (msg) {
+      print('258');
+      print(msg);
       this._status(ConnectStatus.connected);
       this._collections!.values.forEach((c) => c.init());
       this._version = '1';
