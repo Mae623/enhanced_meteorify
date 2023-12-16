@@ -125,7 +125,6 @@ class DDP implements ConnectionNotifier, StatusNotifier {
     this._reader = Reader(ws.stream);
     this._writer = Writer(ws.sink, enableLogs: this._enableLogs);
     this._inboxManager();
-    print(msg);
     this._send(msg);
   }
 
@@ -169,7 +168,6 @@ class DDP implements ConnectionNotifier, StatusNotifier {
       this._status(ConnectStatus.dialing);
       _isTryToReconnect = true;
       final connection = WebSocketChannel.connect(Uri.parse(this._url));
-      print(_sessionId);
 
       this._start(
         connection,
@@ -255,8 +253,6 @@ class DDP implements ConnectionNotifier, StatusNotifier {
   void _initMessageHandlers() {
     this._messageHandlers = {};
     this._messageHandlers!['connected'] = (msg) {
-      print('258');
-      print(msg);
       this._status(ConnectStatus.connected);
       this._collections!.values.forEach((c) => c.init());
       this._version = '1';

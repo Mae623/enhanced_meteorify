@@ -47,7 +47,9 @@ class Meteor {
   static DDP? _client;
 
   /// Get the [_client].
-  static DDP get client => _client!;
+  static DDP get client {
+    return _client!;
+  }
 
   /// A listener for the connection status.
   static MeteorConnectionListener? _connectionListener;
